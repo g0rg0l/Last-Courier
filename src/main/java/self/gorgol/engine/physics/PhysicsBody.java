@@ -11,18 +11,16 @@ import self.gorgol.engine.geometry.Rectangle;
  * maximum speed clamping, and position integration.
  * </p>
  */
+@Getter
 public class PhysicsBody extends Rectangle {
 
     @Setter
-    @Getter
     protected float acceleration = 2400f;
 
     @Setter
-    @Getter
     protected float friction = 1800f;
 
     @Setter
-    @Getter
     protected float maxSpeed = 250f;
 
     protected float vx;
@@ -82,6 +80,9 @@ public class PhysicsBody extends Rectangle {
             float scale = speed / (float) Math.sqrt(vx * vx + vy * vy);
             vx *= scale;
             vy *= scale;
+
+            if (Math.abs(vx) < 0.01) vx = 0;
+            if (Math.abs(vy) < 0.01) vy = 0;
         }
     }
 

@@ -1,6 +1,7 @@
 package self.gorgol.application;
 
 import self.gorgol.business.Player;
+import self.gorgol.business.SomeEntity;
 import self.gorgol.engine.IRenderer;
 import self.gorgol.engine.IUpdater;
 import self.gorgol.input.Context;
@@ -12,7 +13,9 @@ import java.awt.event.KeyEvent;
 
 public class TestPanel extends JPanel implements IUpdater, IRenderer {
 
-    private final Player player = new Player();;
+    private final Player player = new Player();
+
+    private final SomeEntity entity = new SomeEntity();
 
     public TestPanel() {
         super();
@@ -21,6 +24,8 @@ public class TestPanel extends JPanel implements IUpdater, IRenderer {
 
     @Override
     public void update(float dt) {
+
+        // player input ------------------------------------------------------------------------------------------------
         InputManager input = InputManager.getInstance();
         if (input.getContext() == Context.GLOBAL) {
             float dx = 0, dy = 0;
@@ -30,6 +35,8 @@ public class TestPanel extends JPanel implements IUpdater, IRenderer {
             if (input.isPressed(KeyEvent.VK_D)) dx += 1;
             player.updatePosition(dx, dy, dt);
         }
+        // -------------------------------------------------------------------------------------------------------------
+        entity.update(dt);
     }
 
     @Override
@@ -41,6 +48,7 @@ public class TestPanel extends JPanel implements IUpdater, IRenderer {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         player.render(g);
+        entity.render(g);
     }
 
     private void setupKeyBindings() {

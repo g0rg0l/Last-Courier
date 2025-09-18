@@ -4,9 +4,7 @@ import self.gorgol.engine.animation.Animation;
 import self.gorgol.engine.animation.PhysicsMovementAnimation;
 import self.gorgol.engine.physics.PhysicsBody;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.util.Objects;
 
 public class Player  {
 
@@ -16,24 +14,7 @@ public class Player  {
 
     public Player() {
         this.body = new PhysicsBody(0, 0, 128, 128);
-
-        try {
-            this.bodyAnimation = new PhysicsMovementAnimation(
-                    body,
-                    ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player_sprites.png"))),
-                    0.25f,
-                    new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.BOTTOM, 4),
-                    new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.TOP, 4),
-                    new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.LEFT, 4),
-                    new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.RIGHT, 4),
-                    new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.IDLE_BOTTOM, 2),
-                    new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.IDLE_TOP, 2),
-                    new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.IDLE_LEFT, 2),
-                    new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.IDLE_RIGHT, 2)
-            );
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        this.bodyAnimation = createMovementAnimation();
     }
 
     public void render(Graphics graphics) {
@@ -51,6 +32,22 @@ public class Player  {
         }
         body.integrate(dt);
         bodyAnimation.update(dt);
+    }
+
+    private Animation createMovementAnimation() {
+        return new PhysicsMovementAnimation(
+                body,
+                ResourceManager.getInstance().getResource(ResourceManager.CHARACTER_SPRITES),
+                0.25f,
+                new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.BOTTOM, 4),
+                new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.TOP, 4),
+                new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.LEFT, 4),
+                new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.RIGHT, 4),
+                new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.IDLE_BOTTOM, 2),
+                new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.IDLE_TOP, 2),
+                new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.IDLE_LEFT, 2),
+                new PhysicsMovementAnimation.StateFrames(PhysicsMovementAnimation.State.IDLE_RIGHT, 2)
+        );
     }
 
 }
